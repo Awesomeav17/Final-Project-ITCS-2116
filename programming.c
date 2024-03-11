@@ -1,6 +1,4 @@
-//Caleb Mulholland
-//Midterm Project
-//Due 03/01/2024
+
 
 /*
  * This is a Connect4 game where two players take turns dropping discs (X's and O's)
