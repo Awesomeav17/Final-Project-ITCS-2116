@@ -5,7 +5,6 @@
 #define DECK_SIZE 52
 #define FACE_CARDS 10
 
-
 void print_instructions() {
     printf("Welcome to the Blackjack game!\n");
     printf("Instructions:\n");
@@ -48,9 +47,38 @@ void print_card(int card) {
            faces[face_index], suits[suit_index], faces[face_index]);
 }
 
+int get_valid_bet(int player_money) {
+    int bet;
+    char input[100];
+    int result;
+
+    while (1) {
+        printf("Enter your bet (or 0 to quit): ");
+        fgets(input, sizeof(input), stdin);
+
+        // Attempt to read an integer from the input
+        result = sscanf(input, "%d", &bet);
+
+        // Check if sscanf successfully read one integer
+        if (result != 1) {
+            printf("Invalid input. Please enter a valid bet (between 0 and %d).\n", player_money);
+            continue;
+        }
+
+        // Check if the bet is within valid range
+        if (bet < 0 || bet > player_money) {
+            printf("Invalid input. Please enter a valid bet (between 0 and %d).\n", player_money);
+        } else {
+            break;
+        }
+    }
+
+    return bet;
+}
+
 int main() {
     srand(time(NULL));
-    
+
     print_instructions(); 
     int deck[DECK_SIZE];
     for (int i = 0; i < DECK_SIZE; i++) {
@@ -68,21 +96,14 @@ int main() {
     int player_money = 100; // Player's initial money
     int bet;
 
-    
     // Main game loop
     while (player_money > 0) {
         printf("You have $%d.\n", player_money);
-        printf("Enter your bet (or 0 to quit): ");
-        scanf("%d", &bet);
+        bet = get_valid_bet(player_money);
 
         if (bet == 0) {
             printf("Thanks for playing!\n");
             break;
-        }
-
-        if (bet > player_money) {
-            printf("You don't have enough money to bet that amount.\n");
-            continue;
         }
 
         // Deal two cards to the player
